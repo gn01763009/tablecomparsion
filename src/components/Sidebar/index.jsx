@@ -8,13 +8,11 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
-
+import dintsunLogo from '../../assets/dintsun-logo.svg'
 
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 const drawerWidth = 256;
-
-// const menuColor = 'rgba(0,0,0,0.54)';
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -46,6 +44,20 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export default function Sidebar ({toggleDrawer, open}){
   return (
       <Drawer variant="permanent" open={open}>
+      <Box sx={{
+        color: (theme) => theme.palette.primary.main,
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 2.5,
+        paddingBottom: 2,
+      }}
+      >
+        <a href="https://www.dintsun.com/tw">
+          <img alt='DINTSUN Logo' src={dintsunLogo} style={{display: 'inline-block', width: !open ? '60px' : '96px',}} />
+        </a>
+      </Box>
       <List component="nav">
         <ListItemButton>
           <ListItemIcon>
