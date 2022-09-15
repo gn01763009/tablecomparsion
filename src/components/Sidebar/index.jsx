@@ -14,6 +14,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 const drawerWidth = 256;
 
+// const menuColor = 'rgba(0,0,0,0.54)';
+
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     '& .MuiDrawer-paper': {
@@ -60,12 +62,18 @@ export default function Sidebar ({toggleDrawer, open}){
           position: 'absolute',
           bottom: 30,
           left:15.5,
-      }}>
+        }}
+      >
         <IconButton
             aria-label="open drawer"
             onClick={toggleDrawer}
           >
-            <MenuIcon />
+            <MenuIcon 
+              sx={{
+                color:(theme) =>
+                !open ? theme.palette.primary.main : theme.palette.grey[500],
+              }}
+            />
         </IconButton>
       </Box>
     </Drawer>
