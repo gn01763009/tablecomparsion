@@ -49,7 +49,12 @@ export default function Sidebar ({toggleDrawer, open}){
       <List component="nav">
         <ListItemButton>
           <ListItemIcon>
-            <DashboardIcon color="primary" />
+            <DashboardIcon 
+              color="primary"
+              sx={{
+                margin: 'auto 7.25px',
+              }}
+            />
           </ListItemIcon>
           <ListItemText primary="Dashboard" sx={{
             color: (theme) => theme.palette.primary.main,
