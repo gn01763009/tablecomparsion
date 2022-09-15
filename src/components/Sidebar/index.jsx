@@ -4,7 +4,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
-import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
@@ -24,6 +24,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen,
       }),
+      overflow: 'hidden',
       boxSizing: 'border-box',
       ...(!open && {
         overflowX: 'hidden',
@@ -52,26 +53,21 @@ export default function Sidebar ({toggleDrawer, open}){
             color: (theme) => theme.palette.primary.main,
           }}/>
         </ListItemButton>
-        <Divider sx={{ my: 1 }} />
+        <Divider sx={{ my: 0.8 }} />
       </List>
-      <Toolbar
+      <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
           position: 'absolute',
-          width: '100%',
-          bottom: 0,
-          left:0,
-        }}
-      >
+          bottom: 30,
+          left:15.5,
+      }}>
         <IconButton
-          aria-label="open drawer"
-          onClick={toggleDrawer}
-        >
-          <MenuIcon />
+            aria-label="open drawer"
+            onClick={toggleDrawer}
+          >
+            <MenuIcon />
         </IconButton>
-      </Toolbar>
+      </Box>
     </Drawer>
   )
 }
