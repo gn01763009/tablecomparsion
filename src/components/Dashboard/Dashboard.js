@@ -1,16 +1,20 @@
-import { Box } from '@mui/material';
 import Uploader from '../Uploader/Uploader';
-import style from './Dashboard.module.css';
+//MUI
+import { Box } from '@mui/material';
 
 const Dashboard = () => {
   return (
-    <Box className={style.wrapper}>
-      <Box className={style.card}>
-        <Uploader />
-      </Box>
-      <Box className={style.card}>
-        <Uploader />
-      </Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        maxWidth: 1500,
+        overflow: 'hidden',
+      }}
+    >
+      <Uploader />
+      <Uploader />
     </Box>
   );
 };
