@@ -1,11 +1,12 @@
 import * as React from 'react';
 import Sidebar from './Sidebar';
+import Dashboard from './Dashboard/Dashboard';
 import { ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Theme from '../Theme.js';
+
 
 function Copyright(props) {
   return (
@@ -42,9 +43,12 @@ export default function App() {
             overflow: 'auto',
           }}
         >
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
+          <Box sx={{ mt: 4, mb: 4, width:'96%', ml:'3.9%', }}>
+            <Dashboard />
+          </Box>
+          <Box>
+            <Copyright sx={{ pt: 4 , }} />
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>

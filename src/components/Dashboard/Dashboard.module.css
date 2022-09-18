@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3.9%;
+}
+
+.card {
+  display: inline-block;
+  border: 1px white solid;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  text-align: center;
+  cursor: pointer;
+  width: 45.9%;
+  height: 61.325vh;
+}
