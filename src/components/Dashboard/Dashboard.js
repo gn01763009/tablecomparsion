@@ -13,7 +13,6 @@ const Dashboard = () => {
           initData.push({
             id: uuidv4(),
             fileName: '',
-            status: false,
             rows: [],
             cols: [],
           })
@@ -57,7 +56,7 @@ export default Dashboard;
 //   {
 //     id: 0, (Uploader id)
 //     fileName:'fileName', 
-//     status:'boolean',
+//     status:'DONE',
 //     rows: [
 //       {
 //         id: 0, (DataGrid id)
