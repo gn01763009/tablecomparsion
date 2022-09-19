@@ -12,7 +12,9 @@ import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 
 const fileTypes = ["xlsx", "csv", "xls"];
 
-const Uploader = () => {
+const Uploader = ({data, setData}) => {
+  console.log('data',data)
+  console.log('setData',setData)
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState();
   const [sheetData, setSheetData] = useState([]);
