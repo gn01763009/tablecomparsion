@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, createRef } from 'react';
 import Uploader from '../Uploader/Uploader';
+import Zoom from '@mui/material/Zoom';
 import { v4 as uuidv4 } from 'uuid';
 
 //MUI
@@ -22,6 +23,18 @@ const Dashboard = () => {
       }
       return init(2);
   })
+
+  const ref = createRef();
+  const divStyle = {
+    margin: ".5%",
+    marginBottom: "2%",
+    borderRadius: '18px',
+    boxSizing: 'border-box',
+    boxShadow: '0px 6px 10px 0px #00000040',
+    textAlign: 'center',
+    flexGrow: 1,
+  };
+
   return (
     <Box
     component="main"
@@ -42,8 +55,34 @@ const Dashboard = () => {
           overflow: 'hidden',
         }}
       >
+        {/* {data.map(ele => {
+          return (            
+            <Zoom in={true} key={ele.id}>
+              <div style={divStyle}>
+                <Uploader data={ele} setData={setData} ref={ref} />
+              </div>
+            </Zoom>
+          )
+        })}; */}
+
         {data.map(ele => {
-          return <Uploader key={ele.id} data={ele} setData={setData} />
+          if (ele.id !== data[0].id) {
+            return (            
+              <Zoom in={true} key={ele.id} style={{ transitionDelay: true ? '300ms' : '0ms' }}>
+                <div style={divStyle}>
+                  <Uploader data={ele} setData={setData} ref={ref} />
+                </div>
+              </Zoom>
+            )  
+          } else {
+            return (            
+              <Zoom in={true} key={ele.id}>
+                <div style={divStyle}>
+                  <Uploader data={ele} setData={setData} ref={ref} />
+                </div>
+              </Zoom>
+            )
+          }
         })}
       </Box>
     </Box>
