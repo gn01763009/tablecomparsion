@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import Uploader from '../Uploader/Uploader';
 import Preview from '../Preview'
 
 import { v4 as uuidv4 } from 'uuid';
 
+// bouncing animation
+import Bouncing from '../Bouncing/';
+
 //MUI
 import { Box } from '@mui/material';
-import Zoom from '@mui/material/Zoom';
 
 const Dashboard = () => {
   const [dataPreview, setDataPreview] = useState();
@@ -42,15 +44,6 @@ const Dashboard = () => {
   }, [data])
 
   const ref = createRef();
-  const divStyle = {
-    margin: ".5%",
-    marginBottom: "2%",
-    borderRadius: '18px',
-    boxSizing: 'border-box',
-    boxShadow: '0px 6px 10px 0px #00000040',
-    textAlign: 'center',
-    flexGrow: 1,
-  };
 
   return (
     <Box
@@ -77,37 +70,17 @@ const Dashboard = () => {
           justifyContent: 'center',
         }}
       >
-        {/* {data.map(ele => {
+        {data.map((ele, idx) => {
           return (            
-            <Zoom in={true} key={ele.id}>
-              <div style={divStyle}>
-                <Uploader data={ele} setData={setData} ref={ref} />
-              </div>
-            </Zoom>
+            <Bouncing key={ele.id} deplay={idx}>
+              <Uploader data={ele} setData={setData} ref={ref} />
+            </Bouncing>
           )
-        })}; */}
-
-        {data.map(ele => {
-          if (ele.id !== data[0].id) {
-            return (            
-              <Zoom in={true} key={ele.id} style={{ transitionDelay: true ? '300ms' : '0ms' }}>
-                <div style={divStyle}>
-                  <Uploader data={ele} setData={setData} ref={ref} />
-                </div>
-              </Zoom>
-            )  
-          } else {
-            return (            
-              <Zoom in={true} key={ele.id}>
-                <div style={divStyle}>
-                  <Uploader data={ele} setData={setData} ref={ref} />
-                </div>
-              </Zoom>
-            )
-          }
         })}
       </Box>
-      <Preview dataPreview={dataPreview} />
+      <Bouncing>
+        <Preview dataPreview={dataPreview} />
+      </Bouncing>
     </Box>
     </Box>
 

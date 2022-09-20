@@ -79,13 +79,13 @@ const Uploader = forwardRef(({data, setData}, ref) => {
     <Box
     ref={ref}
     sx={{
-      padding: 2.5,
       textAlign: 'center',
       minWidth: '250px',
       maxWidth: '700px',
       height: '600px',
       maxHeight: '500px',
       flexGrow: 1,
+      boxSizing: 'border-box',
     }}
     >
       <Box
