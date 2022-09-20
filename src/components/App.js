@@ -3,8 +3,6 @@ import Sidebar from './Sidebar';
 import Dashboard from './Dashboard/Dashboard';
 import { ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Link from '@mui/material/Link';
 import Theme from '../Theme.js';
 
 export default function App() {
