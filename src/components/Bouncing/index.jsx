@@ -1,12 +1,12 @@
 import React from 'react'
-import Bounce from 'react-reveal/Bounce';
+import {Fade} from "react-awesome-reveal";
 import './index.css';
 //MUI
 import { Box } from "@mui/material";
 
 const Bouncing = ({children, deplay}) => {
   return (
-    <Bounce duration={800} delay={deplay*300}>
+    <Fade duration={800} delay={deplay*300} triggerOnce className="react-reveal">
       <Box
         sx={{
           margin: 1,
@@ -23,7 +23,7 @@ const Bouncing = ({children, deplay}) => {
         >
           {children}
       </Box>
-    </Bounce>
+    </Fade>
   )
 }
 
