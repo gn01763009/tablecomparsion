@@ -1,6 +1,7 @@
 import { useState, useEffect, createRef } from 'react';
 import Uploader from '../Uploader/Uploader';
 import Preview from '../Preview'
+import AnalyzeBtn from '../AnalyzeBtn';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -78,6 +79,7 @@ const Dashboard = () => {
           )
         })}
       </Box>
+      {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn />}
       <Bouncing>
         <Preview dataPreview={dataPreview} />
       </Bouncing>
