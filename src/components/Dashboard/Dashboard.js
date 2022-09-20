@@ -1,12 +1,17 @@
-import { useState, createRef } from 'react';
+import { useState, useEffect, createRef } from 'react';
 import Uploader from '../Uploader/Uploader';
-import Zoom from '@mui/material/Zoom';
+import Preview from '../Preview'
+
 import { v4 as uuidv4 } from 'uuid';
+
+// bouncing animation
+import Bouncing from '../Bouncing/';
 
 //MUI
 import { Box } from '@mui/material';
 
 const Dashboard = () => {
+  const [dataPreview, setDataPreview] = useState();
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -18,31 +23,43 @@ const Dashboard = () => {
             cols: [],
           })
         }
-        console.log('initData',initData)
         return initData;
       }
       return init(2);
   })
+  useEffect(() => {
+    if (data.find((ele)=>ele.status !== 'DONE')) return;
+    console.log('data',data)
+    const id = uuidv4();
+    const dataPreview = {
+      id,
+      fileName: id,
+      rows:[],
+      cols:[],
+    }
+    const rowsComparsion = () => {
+
+    }
+    // setDataPreview()
+  }, [data])
 
   const ref = createRef();
-  const divStyle = {
-    margin: ".5%",
-    marginBottom: "2%",
-    borderRadius: '18px',
-    boxSizing: 'border-box',
-    boxShadow: '0px 6px 10px 0px #00000040',
-    textAlign: 'center',
-    flexGrow: 1,
-  };
 
   return (
     <Box
     component="main"
     sx={{
+      width: '100%',
+      height: '100%',
+      overflow: 'auto',
+    }}
+    >
+    <Box
+    sx={{
       mx:'auto',
       p: 2,
       flexGrow: 1,
-      overflow: 'auto',
+      overflow: 'hidden',
       maxWidth: 1500,
     }}
     >
@@ -51,41 +68,22 @@ const Dashboard = () => {
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'center',
-          maxWidth: 1500,
-          overflow: 'hidden',
         }}
       >
-        {/* {data.map(ele => {
+        {data.map((ele, idx) => {
           return (            
-            <Zoom in={true} key={ele.id}>
-              <div style={divStyle}>
-                <Uploader data={ele} setData={setData} ref={ref} />
-              </div>
-            </Zoom>
+            <Bouncing key={ele.id} deplay={idx}>
+              <Uploader data={ele} setData={setData} ref={ref} />
+            </Bouncing>
           )
-        })}; */}
-
-        {data.map(ele => {
-          if (ele.id !== data[0].id) {
-            return (            
-              <Zoom in={true} key={ele.id} style={{ transitionDelay: true ? '300ms' : '0ms' }}>
-                <div style={divStyle}>
-                  <Uploader data={ele} setData={setData} ref={ref} />
-                </div>
-              </Zoom>
-            )  
-          } else {
-            return (            
-              <Zoom in={true} key={ele.id}>
-                <div style={divStyle}>
-                  <Uploader data={ele} setData={setData} ref={ref} />
-                </div>
-              </Zoom>
-            )
-          }
         })}
       </Box>
+      <Bouncing>
+        <Preview dataPreview={dataPreview} />
+      </Bouncing>
     </Box>
+    </Box>
+
   );
 };
 

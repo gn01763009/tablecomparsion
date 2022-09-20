@@ -1,13 +1,54 @@
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', sans-serif !important;
+  position: relative;
+  touch-action: manipulation;
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+html,
+button {
+  touch-action: manipulation;
+}
+
+section {
+  position: relative;
+}
+
+picture {
+  overflow: hidden;
+}
+
+img {
+  border-style: none;
+  vertical-align: top;
+  line-height: 0;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.btn:focus,
+.btn.focus,
+.navbar-toggler:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+ol ul {
+  list-style-type: disc;
 }
