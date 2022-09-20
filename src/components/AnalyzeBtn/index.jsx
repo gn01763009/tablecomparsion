@@ -1,9 +1,12 @@
-import { Zoom, Box } from "@mui/material";
+import { Zoom } from "@mui/material";
 import Button from "@mui/material/Button";
+import { useEffect } from "react";
 
-const AnalyzeBtn = () => {
+const AnalyzeBtn = ({checkedClick, setCheckedClick}) => {
+  
+  const clickHandler = () => setCheckedClick(!checkedClick);
+
   return (
-    // <Box sx={{width: '100%', display: 'block'}}>
     <Zoom
       in={true}
       sx={{
@@ -14,6 +17,7 @@ const AnalyzeBtn = () => {
         mr: 'auto',
         padding: 2,
         color: 'other.white',
+        borderRadius: 2,
         background: (theme) => theme.palette.secondary.main,
         ':hover': {
           bgcolor: '#776cff',
@@ -22,11 +26,11 @@ const AnalyzeBtn = () => {
     >
       <Button
         size='large'
+        onClick={clickHandler}
       >
         開始比對...
       </Button>
     </Zoom>
-    // </Box>
   )
 }
 

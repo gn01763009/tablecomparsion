@@ -13,6 +13,7 @@ import { Box } from '@mui/material';
 
 const Dashboard = () => {
   const [dataPreview, setDataPreview] = useState();
+  const [checkedClick, setCheckedClick] = useState(false);
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -45,6 +46,7 @@ const Dashboard = () => {
   }, [data])
 
   const ref = createRef();
+  console.log('click status from Dashboard', checkedClick);
 
   return (
     <Box
@@ -79,10 +81,15 @@ const Dashboard = () => {
           )
         })}
       </Box>
-      {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn />}
-      <Bouncing>
-        <Preview dataPreview={dataPreview} />
-      </Bouncing>
+      {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn checkedClick={checkedClick} setCheckedClick={setCheckedClick} />}
+      {checkedClick 
+        ? (
+          <Bouncing>
+            <Preview dataPreview={dataPreview} />
+          </Bouncing>
+        )
+      : null
+      }
     </Box>
     </Box>
 
