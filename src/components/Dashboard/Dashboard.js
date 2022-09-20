@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Uploader from '../Uploader/Uploader';
+import Preview from '../Preview'
 import { v4 as uuidv4 } from 'uuid';
 
 //MUI
 import { Box } from '@mui/material';
 
 const Dashboard = () => {
+  const [dataPreview, setDataPreview] = useState();
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -17,19 +19,40 @@ const Dashboard = () => {
             cols: [],
           })
         }
-        console.log('initData',initData)
         return initData;
       }
       return init(2);
   })
+  useEffect(() => {
+    if (data.find((ele)=>ele.status !== 'DONE')) return;
+    console.log('data',data)
+    const id = uuidv4();
+    const dataPreview = {
+      id,
+      fileName: id,
+      rows:[],
+      cols:[],
+    }
+    const rowsComparsion = () => {
+
+    }
+    // setDataPreview()
+  }, [data])
   return (
     <Box
     component="main"
     sx={{
+      width: '100%',
+      height: '100%',
+      overflow: 'auto',
+    }}
+    >
+    <Box
+    sx={{
       mx:'auto',
       p: 2,
       flexGrow: 1,
-      overflow: 'auto',
+      overflow: 'hidden',
       maxWidth: 1500,
     }}
     >
@@ -38,15 +61,16 @@ const Dashboard = () => {
           display: 'flex',
           flexWrap: 'wrap',
           justifyContent: 'center',
-          maxWidth: 1500,
-          overflow: 'hidden',
         }}
       >
         {data.map(ele => {
           return <Uploader key={ele.id} data={ele} setData={setData} />
         })}
       </Box>
+      <Preview dataPreview={dataPreview} />
     </Box>
+    </Box>
+
   );
 };
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import './Uploader.css';
 import * as XLSX from "xlsx";
 import { FileUploader } from "react-drag-drop-files";
@@ -24,24 +23,22 @@ const Uploader = ({data, setData}) => {
   const {fileName, id, rows, cols, status} = data;
 
   const fileHandler = async (file) => {
-    console.log('fileChange')
     const alphabet = generateAlphabet();
     const data = await file.arrayBuffer();
     const workbook = XLSX.read(data);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    console.log('jsonData',jsonData)
     const colsHandler = (jsonData) => {
       const demoCols = [];
       jsonData.forEach((data, idx) => {
         if (jsonData[1][idx] === undefined) return;
-        demoCols.push(...cols, {
+        demoCols.push({
           field: alphabet[idx],
           headerName: alphabet[idx],
           width: 100
         });
       });
-      console.log("demoCols", demoCols);
+      return demoCols;
     }
   
     const rowsHandler = (jsonData) => {
@@ -59,7 +56,7 @@ const Uploader = ({data, setData}) => {
           });
           demoRows.push(nestRows);
         });
-        console.log("demoRows", demoRows);
+        return demoRows;
       };
       const fileData = {
         id,
@@ -72,7 +69,6 @@ const Uploader = ({data, setData}) => {
   };
 
   const errorHandler = () => {
-    console.log('error')
     setData((prv)=> prv.map(dt => id === dt.id ? {id, status: 'ERROR'} : {...dt}))
   }
 
@@ -86,7 +82,7 @@ const Uploader = ({data, setData}) => {
       boxShadow: '0px 6px 10px 0px #00000040',
       textAlign: 'center',
       minWidth: '250px',
-      maxWidth: '600px',
+      maxWidth: '700px',
       height: '600px',
       maxHeight: '500px',
       flexGrow: 1,
