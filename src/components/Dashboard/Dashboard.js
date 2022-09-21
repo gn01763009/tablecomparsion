@@ -23,7 +23,6 @@ const Dashboard = () => {
   const [dataPreview, setDataPreview] = useState({cols:[], rows:[]});
   const [dataDownload, setDataDownload] = useState({cols:[], rows:[]});
   const [checkedClick, setCheckedClick] = useState(false);
-  const [downloadFile, setDownloadFile] = useState();
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -88,12 +87,12 @@ const Dashboard = () => {
               let objValue = diff.diffWordsWithSpace(row1.toString(),row2.toString());
               diff.diffWordsWithSpace(row1.toString(),row2.toString()).forEach(dif => {
                 const { value, added, removed } = dif;
-                if(added){
-                    newValue = newValue ? `${newValue} | 紅色：${value} |` : `| 紅色：${value} |`;
-                }
                 // row1 = removed
                 if(removed){
-                    newValue = newValue ? `${newValue} | 綠色：${value} |` : `| 綠色：${value} |`;
+                    newValue = newValue ? `${newValue} | new：${value} |` : `| new：${value} |`;
+                }
+                if(added){
+                    newValue = newValue ? `${newValue} | old：${value} |` : `| old：${value} |`;
                 }
                 // same
               if (!added && !removed) {
@@ -127,7 +126,6 @@ const Dashboard = () => {
       rows:rowsComparsion(),
       cols:longerCols,
     }
-    console.log('previewData',previewData)
     setDataPreview(previewData)
     const downloadData = {
       id,
@@ -135,14 +133,8 @@ const Dashboard = () => {
       rows:rowsComparsion(true),
       cols:longerCols,
     }
-    console.log('downloadData',downloadData)
     setDataDownload(downloadData)
-    setDownloadFile(data);
-    console.log('data from Dashboard', data);
   }, [data])
-
-  const ref = createRef();
-  console.log('click status from Dashboard', checkedClick);
 
   return (
     <Box
@@ -171,8 +163,8 @@ const Dashboard = () => {
       >
         {data.map((ele, idx) => {
           return (            
-            <Bouncing key={ele.id} deplay={idx}>
-              <Uploader data={ele} setData={setData} ref={ref} />
+            <Bouncing key={ele.id} deplay={idx} color={idx+1} >
+              <Uploader data={ele} setData={setData} />
             </Bouncing>
           )
         })}
@@ -191,8 +183,8 @@ const Dashboard = () => {
               flexWrap: 'wrap',
               justifyContent: 'center',
             }}>
-              <DownloadBtn contentText={'下載 .xlsx 檔'} downloadFile={downloadFile} />
-              <DownloadBtn contentText={'下載 .csv 檔案'} downloadFile={downloadFile} />
+              <DownloadBtn contentText={'下載 .xlsx 檔'} dataDownload={dataDownload} />
+              <DownloadBtn contentText={'下載 .csv 檔案'} dataDownload={dataDownload} />
             </Box>
           </>
         )

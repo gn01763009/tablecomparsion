@@ -1,4 +1,3 @@
-import { forwardRef } from "react";
 import './Uploader.css';
 import * as XLSX from "xlsx";
 import { FileUploader } from "react-drag-drop-files";
@@ -20,7 +19,7 @@ const generateAlphabet = (capital = true) => {
   );
 };
 
-const Uploader = forwardRef(({data, setData}, ref) => {
+const Uploader = ({data, setData}) => {
   const {fileName, id, status} = data;
 
   const fileHandler = async (file) => {
@@ -83,7 +82,6 @@ const Uploader = forwardRef(({data, setData}, ref) => {
 
   return (
     <Box
-    ref={ref}
     sx={{
       textAlign: 'center',
       minWidth: '250px',
@@ -92,6 +90,7 @@ const Uploader = forwardRef(({data, setData}, ref) => {
       maxHeight: '500px',
       flexGrow: 1,
       boxSizing: 'border-box',
+      background: 'transparent',
     }}
     >
       <Box
@@ -152,6 +151,6 @@ const Uploader = forwardRef(({data, setData}, ref) => {
       </Box>
     </Box>
     );
-});
+};
 
 export default Uploader;
