@@ -3,6 +3,7 @@ import Uploader from '../Uploader/Uploader';
 import Preview from '../Preview';
 import * as diff from "diff";
 import AnalyzeBtn from '../AnalyzeBtn';
+import DownloadBtn from '../DownloadBtn';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -22,6 +23,7 @@ const Dashboard = () => {
   const [dataPreview, setDataPreview] = useState({cols:[], rows:[]});
   const [dataDownload, setDataDownload] = useState({cols:[], rows:[]});
   const [checkedClick, setCheckedClick] = useState(false);
+  const [downloadFile, setDownloadFile] = useState();
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -135,7 +137,8 @@ const Dashboard = () => {
     }
     console.log('downloadData',downloadData)
     setDataDownload(downloadData)
-
+    setDownloadFile(data);
+    console.log('data from Dashboard', data);
   }, [data])
 
   const ref = createRef();
@@ -177,9 +180,21 @@ const Dashboard = () => {
       {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn checkedClick={checkedClick} setCheckedClick={setCheckedClick} />}
       {checkedClick 
         ? (
-          <Bouncing>
-            <Preview dataPreview={dataPreview} />
-          </Bouncing>
+          <>
+            <Bouncing>
+              <Preview dataPreview={dataPreview} />
+            </Bouncing>
+            <Box sx={{
+              display: 'flex',
+              mt: 2,
+              mb: 2,
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}>
+              <DownloadBtn contentText={'下載 .xlsx 檔'} downloadFile={downloadFile} />
+              <DownloadBtn contentText={'下載 .csv 檔案'} downloadFile={downloadFile} />
+            </Box>
+          </>
         )
       : null
       }
