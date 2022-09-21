@@ -1,6 +1,7 @@
 import { useState, useEffect, createRef } from 'react';
 import Uploader from '../Uploader/Uploader';
 import Preview from '../Preview'
+import AnalyzeBtn from '../AnalyzeBtn';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,6 +13,7 @@ import { Box } from '@mui/material';
 
 const Dashboard = () => {
   const [dataPreview, setDataPreview] = useState();
+  const [checkedClick, setCheckedClick] = useState(false);
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -44,6 +46,7 @@ const Dashboard = () => {
   }, [data])
 
   const ref = createRef();
+  console.log('click status from Dashboard', checkedClick);
 
   return (
     <Box
@@ -78,9 +81,15 @@ const Dashboard = () => {
           )
         })}
       </Box>
-      <Bouncing>
-        <Preview dataPreview={dataPreview} />
-      </Bouncing>
+      {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn checkedClick={checkedClick} setCheckedClick={setCheckedClick} />}
+      {checkedClick 
+        ? (
+          <Bouncing>
+            <Preview dataPreview={dataPreview} />
+          </Bouncing>
+        )
+      : null
+      }
     </Box>
     </Box>
 

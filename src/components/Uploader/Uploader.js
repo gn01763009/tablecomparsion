@@ -73,8 +73,6 @@ const Uploader = forwardRef(({data, setData}, ref) => {
     setData((prv)=> prv.map(dt => id === dt.id ? {id, status: 'ERROR'} : {...dt}))
   }
 
-  console.log(`${ref} from Uploader.js`);
-
   return (
     <Box
     ref={ref}
