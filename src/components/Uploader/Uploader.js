@@ -1,4 +1,4 @@
-import { useState, forwardRef } from "react";
+import { forwardRef } from "react";
 import './Uploader.css';
 import * as XLSX from "xlsx";
 import { FileUploader } from "react-drag-drop-files";
@@ -21,7 +21,7 @@ const generateAlphabet = (capital = true) => {
 };
 
 const Uploader = forwardRef(({data, setData}, ref) => {
-  const {fileName, id, rows, cols, status} = data;
+  const {fileName, id, status} = data;
 
   const fileHandler = async (file) => {
     const alphabet = generateAlphabet();
@@ -33,10 +33,18 @@ const Uploader = forwardRef(({data, setData}, ref) => {
       const demoCols = [];
       jsonData.forEach((data, idx) => {
         if (jsonData[1][idx] === undefined) return;
+        if(alphabet[idx] === 'B'){
+          demoCols.push({
+            field: alphabet[idx],
+            headerName: alphabet[idx],
+            width: 400,
+          });
+          return;
+        }
         demoCols.push({
           field: alphabet[idx],
           headerName: alphabet[idx],
-          width: 100
+          width: 80,
         });
       });
       return demoCols;
