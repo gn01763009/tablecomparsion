@@ -1,4 +1,3 @@
-import { useState, forwardRef } from "react";
 import './Uploader.css';
 import * as XLSX from "xlsx";
 import { FileUploader } from "react-drag-drop-files";
@@ -20,8 +19,8 @@ const generateAlphabet = (capital = true) => {
   );
 };
 
-const Uploader = forwardRef(({data, setData}, ref) => {
-  const {fileName, id, rows, cols, status} = data;
+const Uploader = ({data, setData}) => {
+  const {fileName, id, status} = data;
 
   const fileHandler = async (file) => {
     const alphabet = generateAlphabet();
@@ -33,10 +32,18 @@ const Uploader = forwardRef(({data, setData}, ref) => {
       const demoCols = [];
       jsonData.forEach((data, idx) => {
         if (jsonData[1][idx] === undefined) return;
+        if(alphabet[idx] === 'B'){
+          demoCols.push({
+            field: alphabet[idx],
+            headerName: alphabet[idx],
+            width: 400,
+          });
+          return;
+        }
         demoCols.push({
           field: alphabet[idx],
           headerName: alphabet[idx],
-          width: 100
+          width: 80,
         });
       });
       return demoCols;
@@ -73,11 +80,8 @@ const Uploader = forwardRef(({data, setData}, ref) => {
     setData((prv)=> prv.map(dt => id === dt.id ? {id, status: 'ERROR'} : {...dt}))
   }
 
-  console.log(`${ref} from Uploader.js`);
-
   return (
     <Box
-    ref={ref}
     sx={{
       textAlign: 'center',
       minWidth: '250px',
@@ -86,6 +90,7 @@ const Uploader = forwardRef(({data, setData}, ref) => {
       maxHeight: '500px',
       flexGrow: 1,
       boxSizing: 'border-box',
+      background: 'transparent',
     }}
     >
       <Box
@@ -146,6 +151,6 @@ const Uploader = forwardRef(({data, setData}, ref) => {
       </Box>
     </Box>
     );
-});
+};
 
 export default Uploader;
