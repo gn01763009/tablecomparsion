@@ -1,6 +1,7 @@
 import { useState, useEffect, createRef } from 'react';
 import Uploader from '../Uploader/Uploader';
-import Preview from '../Preview'
+import Preview from '../Preview';
+import * as diff from "diff";
 import AnalyzeBtn from '../AnalyzeBtn';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -11,8 +12,15 @@ import Bouncing from '../Bouncing/';
 //MUI
 import { Box } from '@mui/material';
 
+const generateAlphabet = (capital = true) => {
+  return [...Array(26)].map((_, i) =>
+    String.fromCharCode(i + (capital ? 65 : 97))
+  );
+};
+
 const Dashboard = () => {
-  const [dataPreview, setDataPreview] = useState();
+  const [dataPreview, setDataPreview] = useState({cols:[], rows:[]});
+  const [dataDownload, setDataDownload] = useState({cols:[], rows:[]});
   const [checkedClick, setCheckedClick] = useState(false);
   const [data, setData] = useState(()=>{
       const init = (num) => {
@@ -31,18 +39,103 @@ const Dashboard = () => {
   })
   useEffect(() => {
     if (data.find((ele)=>ele.status !== 'DONE')) return;
-    console.log('data',data)
+    const alphabet = generateAlphabet();
+    const data1 = data[0];
+    const data2 = data[1];
     const id = uuidv4();
-    const dataPreview = {
+    const rows1 = data1.rows;
+    const cols1 = data1.cols;
+    const rows2 = data2.rows;
+    const cols2 = data2.cols;
+    const longerCols = cols1.length > cols2.length ? cols1 : cols2; 
+
+    // header handler A col
+    const rowsComparsion = (download = false) => {
+      const newDatas = [];
+      const longerRows = rows1.length > rows2.length ? rows1 : rows2; 
+      longerRows.forEach((row, index) => {
+        const ro1 = rows1[index] ? rows1[index]['A'] ? rows1[index]['A'] : '' : ''
+        const ro2 = rows2[index] ? rows2[index]['A'] ? rows2[index]['A'] : '' : ''
+        const diffProps = diff.diffWordsWithSpace(ro1,ro2)
+        diffProps.forEach(diffprop => {
+          const { value, added, removed } = diffprop;
+          //ro2 => added
+          if(added) {
+            newDatas.push({
+              ...rows2[index],
+              className: "added",
+            })
+          }
+          //ro1 => removed
+          if(removed) {
+            if(download) return;
+            newDatas.push({
+              ...rows1[index],
+              className: "removed",
+            })
+          }
+          if (!added && !removed) {
+            let sameRow = {};
+            alphabet.forEach(alph =>{
+              const row1 = rows1[index] ? rows1[index][alph] === undefined ? undefined : rows1[index][alph] : '';
+              const row2 = rows2[index] ? rows2[index][alph] === undefined ? undefined : rows2[index][alph] : '';
+              if (row1 === undefined && row2 === undefined) {
+                return;
+              }
+              let newValue = '';
+              let objValue = diff.diffWordsWithSpace(row1.toString(),row2.toString());
+              diff.diffWordsWithSpace(row1.toString(),row2.toString()).forEach(dif => {
+                const { value, added, removed } = dif;
+                if(added){
+                    newValue = newValue ? `${newValue} | 紅色：${value} |` : `| 紅色：${value} |`;
+                }
+                // row1 = removed
+                if(removed){
+                    newValue = newValue ? `${newValue} | 綠色：${value} |` : `| 綠色：${value} |`;
+                }
+                // same
+              if (!added && !removed) {
+                    newValue = newValue + value;
+                }
+              })
+              if(download){
+                sameRow = {
+                  ...sameRow,
+                  [alph] : newValue
+                }
+              } else {
+                sameRow = {
+                  ...sameRow,
+                  [alph]: objValue,
+                };
+              }
+            })
+            newDatas.push(sameRow)
+          }
+        })
+      })
+      newDatas.forEach((newDat, id)=>{
+        newDatas[id].id = id
+      })
+      return newDatas;
+    }
+    const previewData = {
       id,
       fileName: id,
-      rows:[],
-      cols:[],
+      rows:rowsComparsion(),
+      cols:longerCols,
     }
-    const rowsComparsion = () => {
+    console.log('previewData',previewData)
+    setDataPreview(previewData)
+    const downloadData = {
+      id,
+      fileName: id,
+      rows:rowsComparsion(true),
+      cols:longerCols,
+    }
+    console.log('downloadData',downloadData)
+    setDataDownload(downloadData)
 
-    }
-    // setDataPreview()
   }, [data])
 
   const ref = createRef();
@@ -97,44 +190,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-// const dataSchema = [
-//   {
-//     id: 0, (Uploader id)
-//     fileName:'fileName', 
-//     status:'DONE',
-//     rows: [
-//       {
-//         id: 0, (DataGrid id)
-//         alphabet[0]: `${jsonData[0][0]}`,
-//         alphabet[1]: `${jsonData[0][1]}`,
-//         alphabet[2]: `${jsonData[0][2]}`,
-//       },
-//     ],
-//     cols: [
-//       {
-//         field: alphabet[0],
-//         headerName: "jsonData[1][idx]"
-//       },
-//     ]
-//   },
-//   {
-//     id: 1, (Uploader id)
-//     fileName:'fileName',
-//     status:'boolean',
-//     rows: [
-//       {
-//         id: 0, (DataGrid id)
-//         alphabet[0]: `${jsonData[0][0]}`,
-//         alphabet[1]: `${jsonData[0][1]}`,
-//         alphabet[2]: `${jsonData[0][2]}`,
-//       },
-//     ],
-//     cols: [
-//       {
-//         field: alphabet[0],
-//         headerName: "jsonData[1][idx]"
-//       },
-//     ]
-//   },
-// ]
