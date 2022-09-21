@@ -1,6 +1,7 @@
 import { useState, useEffect, createRef } from 'react';
 import Uploader from '../Uploader/Uploader';
-import Preview from '../Preview'
+import Preview from '../Preview';
+import DownloadBtn from '../DownloadBtn';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,6 +13,7 @@ import { Box } from '@mui/material';
 
 const Dashboard = () => {
   const [dataPreview, setDataPreview] = useState();
+  const [downloadFile, setDownloadFile] = useState();
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -41,6 +43,8 @@ const Dashboard = () => {
 
     }
     // setDataPreview()
+    setDownloadFile(data);
+    console.log('data from Dashboard', data);
   }, [data])
 
   const ref = createRef();
@@ -81,6 +85,16 @@ const Dashboard = () => {
       <Bouncing>
         <Preview dataPreview={dataPreview} />
       </Bouncing>
+      <Box sx={{
+        display: 'flex',
+        mt: 2,
+        mb: 2,
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+      }}>
+        <DownloadBtn contentText={'下載 .xlsx 檔'} downloadFile={downloadFile} />
+        <DownloadBtn contentText={'下載 .csv 檔案'} downloadFile={downloadFile} />
+      </Box>
     </Box>
     </Box>
 
