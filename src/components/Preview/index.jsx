@@ -20,12 +20,12 @@ const styles = {
 const DiffCell = ({props}) => {
   return (
     <span>{typeof props.value !== 'object'? (props.value) : (
-      props.value.map(group => {
+      props.value.map((group, idx) => {
         const { value, added, removed } = group;
         let nodeStyles;
         if (added) nodeStyles = styles.added;
         if (removed) nodeStyles = styles.removed;
-        return <span style={nodeStyles}>{value}</span>;
+        return <span key={idx} style={nodeStyles}>{value}</span>;
       })
     )}</span>
   );
