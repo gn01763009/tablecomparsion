@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Theme from '../Theme.js';
 
 export default function App() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };

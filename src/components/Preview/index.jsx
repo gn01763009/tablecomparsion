@@ -57,30 +57,37 @@ const Preview = ({dataPreview}) => {
       borderRadius: 2,
       '& .added': {
         backgroundColor: '#b5efdb',
+        background: "linear-gradient(45deg, green 25%,#b5efdb 25%, #b5efdb 50%, green 50%, green 75%, #b5efdb 75%)",
+        backgroundSize:"20px 20px",
+        opacity: '30%',
       },
       '& .removed': {
         backgroundColor: '#fec4c0',
+        background: "linear-gradient(45deg, red 25%,#fec4c0 25%, #fec4c0 50%, red 50%, red 75%, #fec4c0 75%)",
+        backgroundSize:"20px 20px",
+        opacity: '30%',
       },
     }}
     >
-      <DataGrid 
-      getRowHeight={() => 'auto'}
-      rows={row}
-      columns={column}
-      hideFooter
-      sx={{
-        fontSize: "16px",
-        '& .MuiDataGrid-cell':{
-          textAlign: 'center'
-        }
-      }}
-      getCellClassName={(params) => {
-        if(!params.value) return;
-        if(params.row.className) {
-          return params.row.className
-        }
-      }}
-      />
+        <DataGrid 
+        getRowHeight={() => 'auto'}
+        rows={row}
+        columns={column}
+        hideFooter
+        height={'100%'}
+        sx={{
+          fontSize: "16px",
+          '& .MuiDataGrid-cell':{
+            textAlign: 'center'
+          }
+        }}
+        getCellClassName={(params) => {
+          if(!params.value) return;
+          if(params.row.className) {
+            return params.row.className
+          }
+        }}
+        />
     </Box>
   )
 }
