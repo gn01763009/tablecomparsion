@@ -88,7 +88,7 @@ const Dashboard = () => {
         Object.keys(rows2[idx2]).map(ke => {
           x = {...x, [ke]:'x'};
         })
-        newCols2.push(rows2[idx2])
+        newCols2.push({...rows2[idx2], className:"new"})
         newCols1.push({...x, className: "added"})
         console.log('x added',{...x, className: "added"})
         idx2 += 1;
@@ -101,7 +101,7 @@ const Dashboard = () => {
         Object.keys(rows1[idx1]).map(ke => {
           x = {...x, [ke]:'x'};
         })
-        newCols1.push(rows1[idx1])
+        newCols1.push({...rows1[idx1], className:"old"})
         newCols2.push({...x, className: "removed"})
         console.log('x removed',{...x, className: "removed"})
         idx1 += 1;
