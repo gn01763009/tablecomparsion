@@ -66,10 +66,10 @@ const Dashboard = () => {
           "A": val
         }
         if(added) {
-          obj = {...obj, className: "added"}
+          obj = {...obj, modified: "added"}
         }
         if(removed) {
-          obj = {...obj, className: "removed"}
+          obj = {...obj, modified: "removed"}
         }
         return newArray.push(obj)
       })
@@ -82,28 +82,32 @@ const Dashboard = () => {
     newArray.forEach((ele)=> {
       const ro1 = rows1[idx1] ? rows1[idx1]['A'] ? rows1[idx1]['A'] : '' : '';
       const ro2 = rows2[idx2] ? rows2[idx2]['A'] ? rows2[idx2]['A'] : '' : '';
-      if(ele.className === 'added') {
+      if(ele.modified === 'added') {
         // idx2 + 1 to skip
         let x = {};
         Object.keys(rows2[idx2]).map(ke => {
           x = {...x, [ke]:'x'};
         })
-        newCols2.push({...rows2[idx2], className:"new"})
-        newCols1.push({...x, className: "added"})
-        console.log('x added',{...x, className: "added"})
+        newCols2.push({...rows2[idx2], modified:"new"})
+        newCols1.push({...x, modified: "added"})
+        console.log('x added',{...x, modified: "added"})
         idx2 += 1;
         return;
       }
 
-      if(ele.className === 'removed') {
+      if(ele.modified === 'removed') {
         // idx1 + 1 to skip
         let x = {};
-        Object.keys(rows1[idx1]).map(ke => {
-          x = {...x, [ke]:'x'};
-        })
-        newCols1.push({...rows1[idx1], className:"old"})
-        newCols2.push({...x, className: "removed"})
-        console.log('x removed',{...x, className: "removed"})
+        if(!download) {
+          Object.keys(rows1[idx1]).map(ke => {
+            x = {...x, [ke]:'x'};
+          })
+        }
+        newCols1.push({...rows1[idx1], modified:"old"})
+        if(!download) {
+          newCols2.push({...x, modified: "removed"})
+        }
+        console.log('x removed',{...x, modified: "removed"})
         idx1 += 1;
         return;
       }
@@ -117,7 +121,9 @@ const Dashboard = () => {
       alphabet.forEach(alph =>{
         const row1 = rows1[idx1] ? rows1[idx1][alph] === undefined ? undefined : rows1[idx1][alph] : '';
         const row2 = rows2[idx2] ? rows2[idx2][alph] === undefined ? undefined : rows2[idx2][alph] : '';
-        if (row1 === undefined && row2 === undefined) {
+        console.log('row1 :',row1)
+        console.log('row2 :',row2)
+        if (row1 === undefined || row2 === undefined) {
           return;
         }
         let newValue = '';
@@ -126,10 +132,10 @@ const Dashboard = () => {
           const { value, added, removed } = dif;
           // row1 = removed
           if(removed){
-              newValue = newValue ? `${newValue} | new：${value} |` : `| new：${value} |`;
+              sameRow = {...sameRow, modified: (sameRow.modified ? sameRow.modified + ',' : '') + `${alph}${idx1 + 1}: modified`}
           }
           if(added){
-              newValue = newValue ? `${newValue} | old：${value} |` : `| old：${value} |`;
+              newValue = value;
           }
           // same
         if (!added && !removed) {
@@ -167,7 +173,29 @@ const Dashboard = () => {
       return newCols2;
     }
   }
-
+  const previewData1 = {
+    id: uuidv4(),
+    fileName: uuidv4(),
+    rows:comparsionHandler(false,1),
+    cols:longerCols,
+  }
+  const previewData2 = {
+    id : uuidv4(),
+    fileName: uuidv4(),
+    rows:comparsionHandler(false,2),
+    cols:longerCols,
+  }
+  console.log('previewData1',previewData1)
+  console.log('previewData2',previewData2)
+  setDataPreview1(previewData1)
+  setDataPreview2(previewData2)
+  const downloadData = {
+    id : uuidv4(),
+    fileName: uuidv4(),
+    rows:comparsionHandler(true,2),
+    cols:longerCols,
+  }
+  setDataDownload(downloadData)
 
 
     // header handler A col
@@ -254,22 +282,6 @@ const Dashboard = () => {
     //   cols:longerCols,
     // }
     // setDataPreview(previewData)
-    const previewData1 = {
-      id: uuidv4(),
-      fileName: uuidv4(),
-      rows:comparsionHandler(false,1),
-      cols:longerCols,
-    }
-    const previewData2 = {
-      id : uuidv4(),
-      fileName: uuidv4(),
-      rows:comparsionHandler(false,2),
-      cols:longerCols,
-    }
-    console.log('previewData1',previewData1)
-    console.log('previewData2',previewData2)
-    setDataPreview1(previewData1)
-    setDataPreview2(previewData2)
     // const downloadData = {
     //   id,
     //   fileName: id,
@@ -277,7 +289,7 @@ const Dashboard = () => {
     //   cols:longerCols,
     // }
     // setDataDownload(downloadData)
-  }, [data])
+  }, [checkedClick])
 
   return (
     <Box
@@ -306,17 +318,16 @@ const Dashboard = () => {
       >
         {data.map((ele, idx) => {
           return (            
-            <Bouncing key={ele.id} deplay={idx} color={idx+1} >
-              <Uploader data={ele} setData={setData} />
+            <Bouncing key={ele.id} deplay={idx} >
+              {checkedClick ? (<Preview dataPreview={idx === 0 ? dataPreview1: dataPreview2} index={idx} />): (<Uploader data={ele} setData={setData} />)}
             </Bouncing>
           )
         })}
       </Box>
-      {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn checkedClick={checkedClick} setCheckedClick={setCheckedClick} />}
       {checkedClick 
         ? (
           <>
-            <Box sx={{
+            {/* <Box sx={{
                 display: 'flex',
                 mt: 2,
                 mb: 2,
@@ -324,12 +335,12 @@ const Dashboard = () => {
                 justifyContent: 'center',
               }}>
                 <Bouncing>
-                  <Preview dataPreview={dataPreview1} />
+                <Preview dataPreview={dataPreview1} />
                 </Bouncing>
                 <Bouncing>
                   <Preview dataPreview={dataPreview2} />
                 </Bouncing>
-            </Box>
+            </Box> */}
             <Box sx={{
               display: 'flex',
               mt: 2,
@@ -342,11 +353,10 @@ const Dashboard = () => {
             </Box>
           </>
         )
-      : null
-      }
+      : null}
+      {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn checkedClick={checkedClick} setCheckedClick={setCheckedClick} />}
     </Box>
-    </Box>
-
+  </Box>
   );
 };
 

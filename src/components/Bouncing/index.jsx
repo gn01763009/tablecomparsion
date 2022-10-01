@@ -4,7 +4,7 @@ import './index.css';
 //MUI
 import { Box } from "@mui/material";
 
-const Bouncing = ({children, deplay, color}) => {
+const Bouncing = ({children, deplay}) => {
   return (
     <Zoom duration={500} delay={deplay*300} triggerOnce className="react-reveal">
       <Box
@@ -19,7 +19,6 @@ const Bouncing = ({children, deplay, color}) => {
           height: '600px',
           maxHeight: '500px',
           flexGrow: 1,
-          bgcolor: color ? color === 1 ? "#FFDAD8" :"#DEFDF2": "transparent"
         }}
         >
           {children}
