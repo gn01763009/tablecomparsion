@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useLayoutEffect } from 'react'
 
 //MUI
 import { Box } from "@mui/material";
@@ -15,32 +15,51 @@ const styles = {
     backgroundColor: "#fec4c0",
     fontSize: "20px",
   },
+  newAdded: {
+    color: "green",
+    backgroundColor: "#b5efdb",
+    fontSize: "16px",
+    opacity: "50%",
+  },
+  oldRemoved: {
+    color: "red",
+    backgroundColor: "#fec4c0",
+    fontSize: "16px",
+    opacity: "50%",
+  },
 };
 
-const DiffCell = ({props}) => {
+const DiffCell = ({props, index}) => {
   return (
     <span>{typeof props.value !== 'object'? (props.value) : (
       props.value.map((group, idx) => {
         const { value, added, removed } = group;
         let nodeStyles;
-        if (added) nodeStyles = styles.added;
-        if (removed) nodeStyles = styles.removed;
+        if(index === 0) {
+          if (added) nodeStyles = styles.newAdded;
+          if (removed) nodeStyles = styles.removed;
+        }
+        if(index === 1) {
+          if (added) nodeStyles = styles.added;
+          if (removed) nodeStyles = styles.oldRemoved;
+        }
+
         return <span key={idx} style={nodeStyles}>{value}</span>;
       })
     )}</span>
   );
 };
 
-const Preview = ({dataPreview}) => {
+const Preview = ({dataPreview, index}) => {
   const [column, setColumn] = useState([]);
   const [row, setRow] = useState([]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const {cols, rows} = dataPreview;
     let newCol = cols;
     let newRow = rows;
     newCol = newCol.map((col)=> {
-      return {...col, renderCell: (props)=> <DiffCell props={props}/>}
+      return {...col, renderCell: (props)=> <DiffCell props={props} index={index}/>}
     })
     setColumn(newCol)
     setRow(newRow)
@@ -57,30 +76,45 @@ const Preview = ({dataPreview}) => {
       borderRadius: 2,
       '& .added': {
         backgroundColor: '#b5efdb',
+        background: "linear-gradient(45deg, green 25%,#b5efdb 25%, #b5efdb 50%, green 50%, green 75%, #b5efdb 75%)",
+        backgroundSize:"20px 20px",
+        color: 'transparent',
+        opacity: '10%',
       },
       '& .removed': {
+        backgroundColor: '#fec4c0',
+        background: "linear-gradient(45deg, red 25%,#fec4c0 25%, #fec4c0 50%, red 50%, red 75%, #fec4c0 75%)",
+        backgroundSize:"20px 20px",
+        color: 'transparent',
+        opacity: '10%',
+      },
+      '& .new': {
+        backgroundColor: '#b5efdb',
+      },
+      '& .old': {
         backgroundColor: '#fec4c0',
       },
     }}
     >
-      <DataGrid 
-      getRowHeight={() => 'auto'}
-      rows={row}
-      columns={column}
-      hideFooter
-      sx={{
-        fontSize: "16px",
-        '& .MuiDataGrid-cell':{
-          textAlign: 'center'
-        }
-      }}
-      getCellClassName={(params) => {
-        if(!params.value) return;
-        if(params.row.className) {
-          return params.row.className
-        }
-      }}
-      />
+        <DataGrid 
+        getRowHeight={() => 'auto'}
+        rows={row}
+        columns={column}
+        hideFooter
+        height={'100%'}
+        sx={{
+          fontSize: "14px",
+          '& .MuiDataGrid-cell':{
+            textAlign: 'center'
+          }
+        }}
+        getCellClassName={(params) => {
+          if(!params.value) return;
+          if(params.row.modified) {
+            return params.row.modified
+          }
+        }}
+        />
     </Box>
   )
 }

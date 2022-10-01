@@ -10,6 +10,7 @@ import { Typography } from "@mui/material";
 import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import DoneIcon from '@mui/icons-material/Done';
 import ErrorIcon from '@mui/icons-material/Error';
+import { DataGrid } from '@mui/x-data-grid';
 
 const fileTypes = ["xlsx", "csv", "xls"];
 
@@ -20,7 +21,7 @@ const generateAlphabet = (capital = true) => {
 };
 
 const Uploader = ({data, setData}) => {
-  const {fileName, id, status} = data;
+  const {fileName, id, status, rows, cols} = data;
 
   const fileHandler = async (file) => {
     const alphabet = generateAlphabet();
@@ -103,51 +104,73 @@ const Uploader = ({data, setData}) => {
         position: 'relative',
       }}
       >
-      <FileUploader
-        handleChange={fileHandler}
-        name="file"
-        types={fileTypes}
-        hoverTitle="拖曳至此"
-        classes="card"
-        onTypeError={errorHandler}
-      >
-        <div className="droparea">
-          <div className="iconWrapper">
-          {
-          status !== 'DONE' ? (
-            status === 'ERROR' ? (
-              <ErrorIcon
-                fontSize='large'
-                style={{
-                  color: 'red',
-                }}
-              />
-            ) : (
-              <UploadRoundedIcon
-                fontSize='large'
-                style={{
-                  color: 'black',
-                }}
-              />
-            )
-          ) : (
-            <DoneIcon
-            fontSize='large'
-            style={{
-              color: 'green',
+        {status === 'DONE' ? (
+          <DataGrid 
+            getRowHeight={() => 'auto'}
+            rows={rows}
+            columns={cols}
+            hideFooter
+            height={'100%'}
+            sx={{
+              fontSize: "14px",
+              '& .MuiDataGrid-cell':{
+                textAlign: 'center'
+              }
+            }}
+            getCellClassName={(params) => {
+              if(!params.value) return;
+              if(params.row.className) {
+                return params.row.className
+              }
             }}
           />
-          )}
+        ): (
+          <FileUploader
+          handleChange={fileHandler}
+          name="file"
+          types={fileTypes}
+          hoverTitle="拖曳至此"
+          classes="card"
+          onTypeError={errorHandler}
+        >
+          <div className="droparea">
+            <div className="iconWrapper">
+            {
+            status !== 'DONE' ? (
+              status === 'ERROR' ? (
+                <ErrorIcon
+                  fontSize='large'
+                  style={{
+                    color: 'red',
+                  }}
+                />
+              ) : (
+                <UploadRoundedIcon
+                  fontSize='large'
+                  style={{
+                    color: 'black',
+                  }}
+                />
+              )
+            ) : (
+              <DoneIcon
+              fontSize='large'
+              style={{
+                color: 'green',
+              }}
+            />
+            )}
+            </div>
+            <h3>
+              拖曳到此即可，支援 xlsx, csv, xls 檔案
+            </h3>
+            {status === 'ERROR' ? (
+              <Typography sx={{width: '100%', wordBreak: 'break-all', color: 'red'}}>不支援目前檔案或有錯誤，請試著重新整理！</Typography>
+            ): null}
+            <Typography sx={{width: '100%', wordBreak: 'break-all'}}>{fileName ? `${fileName}` : "尚未上傳檔案"}</Typography>
           </div>
-          <h3>
-            拖曳到此即可，支援 xlsx, csv, xls 檔案
-          </h3>
-          {status === 'ERROR' ? (
-            <Typography sx={{width: '100%', wordBreak: 'break-all', color: 'red'}}>不支援目前檔案或有錯誤，請試著重新整理！</Typography>
-          ): null}
-          <Typography sx={{width: '100%', wordBreak: 'break-all'}}>{fileName ? `${fileName}` : "尚未上傳檔案"}</Typography>
-        </div>
-      </FileUploader>
+        </FileUploader>
+      )}
       </Box>
     </Box>
     );

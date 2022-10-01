@@ -1,5 +1,5 @@
 # Stage 0 - Build Frontend Assets
-FROM node:lts-gallium as build
+FROM node:16.14.2 as build
 
 WORKDIR /app
 COPY package*.json ./
