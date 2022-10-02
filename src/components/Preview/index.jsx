@@ -68,11 +68,9 @@ const Preview = ({dataPreview, index}) => {
     <Box
     sx={{
       minWidth: '250px',
-      height: '600px',
-      maxHeight: '500px',
       flexGrow: 1,
       boxSizing: 'border-box',
-      overflow: 'auto',
+      overflow: 'hidden',
       borderRadius: 2,
       '& .added': {
         backgroundColor: '#b5efdb',
@@ -101,8 +99,12 @@ const Preview = ({dataPreview, index}) => {
         rows={row}
         columns={column}
         hideFooter
-        height={'100%'}
+        disableColumnMenu
         sx={{
+          position:'relative',
+          top: '-56px',
+          height:'569px',
+          borderRadius: 2,
           fontSize: "14px",
           '& .MuiDataGrid-cell':{
             textAlign: 'center'
