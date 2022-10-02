@@ -102,6 +102,7 @@ const Uploader = ({data, setData}) => {
         border: '2px #c0c0c0 dashed',
         borderRadius: 4,
         position: 'relative',
+        overflow: 'hidden',
       }}
       >
         {status === 'DONE' ? (
@@ -113,6 +114,10 @@ const Uploader = ({data, setData}) => {
             height={'100%'}
             sx={{
               fontSize: "14px",
+              position:'relative',
+              top: '-56px',
+              height:'569px',
+              borderRadius: 2,
               '& .MuiDataGrid-cell':{
                 textAlign: 'center'
               }
