@@ -7,24 +7,24 @@ import { DataGrid } from "@mui/x-data-grid";
 const styles = {
   added: {
     color: "green",
-    backgroundColor: "#b5efdb",
-    fontSize: "20px",
+    backgroundColor: "rgba(181, 239, 219, 0.6)",
+    fontSize: "16px",
   },
   removed: {
     color: "red",
     backgroundColor: "#fec4c0",
-    fontSize: "20px",
+    fontSize: "16px",
   },
   newAdded: {
     color: "green",
     backgroundColor: "#b5efdb",
-    fontSize: "16px",
+    fontSize: "14px",
     opacity: "50%",
   },
   oldRemoved: {
     color: "red",
     backgroundColor: "#fec4c0",
-    fontSize: "16px",
+    fontSize: "14px",
     opacity: "50%",
   },
 };
@@ -50,7 +50,7 @@ const DiffCell = ({props, index}) => {
   );
 };
 
-const Preview = ({dataPreview, index}) => {
+const Preview = ({dataPreview, index, previewRef}) => {
   const [column, setColumn] = useState([]);
   const [row, setRow] = useState([]);
 
@@ -66,6 +66,7 @@ const Preview = ({dataPreview, index}) => {
   }, [dataPreview])
   return (
     <Box
+    ref={previewRef ? previewRef : null}
     sx={{
       minWidth: '250px',
       flexGrow: 1,
@@ -94,29 +95,29 @@ const Preview = ({dataPreview, index}) => {
       },
     }}
     >
-        <DataGrid 
-        getRowHeight={() => 'auto'}
-        rows={row}
-        columns={column}
-        hideFooter
-        disableColumnMenu
-        sx={{
-          position:'relative',
-          top: '-56px',
-          height:'569px',
-          borderRadius: 2,
-          fontSize: "14px",
-          '& .MuiDataGrid-cell':{
-            textAlign: 'center'
-          }
-        }}
-        getCellClassName={(params) => {
-          if(!params.value) return;
-          if(params.row.modified) {
-            return params.row.modified
-          }
-        }}
-        />
+      <DataGrid 
+      getRowHeight={() => 'auto'}
+      rows={row}
+      columns={column}
+      hideFooter
+      disableColumnMenu
+      sx={{
+        position:'relative',
+        top: '-56px',
+        height:'569px',
+        borderRadius: 2,
+        fontSize: "14px",
+        '& .MuiDataGrid-cell':{
+          textAlign: 'center'
+        }
+      }}
+      getCellClassName={(params) => {
+        if(!params.value) return;
+        if(params.row.modified) {
+          return params.row.modified
+        }
+      }}
+      />
     </Box>
   )
 }

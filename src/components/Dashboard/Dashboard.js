@@ -1,9 +1,10 @@
-import { useState, useEffect, createRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Uploader from '../Uploader/Uploader';
 import Preview from '../Preview';
 import * as diff from "diff";
 import AnalyzeBtn from '../AnalyzeBtn';
 import DownloadBtn from '../DownloadBtn';
+import ScreenshotBtn from '../ScreenshotBtn';
 
 import { v4 as uuidv4 } from 'uuid';
 
@@ -22,6 +23,7 @@ const generateAlphabet = (capital = true) => {
 };
 
 const Dashboard = () => {
+  const previewRef = useRef(null);
   const [dataPreview1, setDataPreview1] = useState({cols:[], rows:[]});
   const [dataPreview2, setDataPreview2] = useState({cols:[], rows:[]});
   const [dataDownload, setDataDownload] = useState({cols:[], rows:[]});
@@ -231,6 +233,7 @@ const Dashboard = () => {
             }}>
               <DownloadBtn contentText={'下載 .xlsx 檔'} dataDownload={dataDownload} />
               <DownloadBtn contentText={'下載 .csv 檔案'} dataDownload={dataDownload} />
+              <ScreenshotBtn previewRef={previewRef} dataPreview2={dataPreview2}/>
             </Box>
           </>
         )
