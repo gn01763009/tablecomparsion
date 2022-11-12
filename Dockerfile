@@ -1,10 +1,10 @@
 # Stage 0 - Build Frontend Assets
-FROM node:14.21.1 as build
+FROM node:16.14.2 as build
 
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-RUN npm install --platform=darwin --arch=arm64v8 sharp
+# RUN npm install --platform=darwin --arch=arm64v8 sharp
 COPY . .
 RUN npm run build
 
