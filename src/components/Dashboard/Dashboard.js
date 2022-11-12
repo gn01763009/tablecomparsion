@@ -15,6 +15,7 @@ import Bouncing from '../Bouncing/';
 
 //MUI
 import { Box } from '@mui/material';
+import ResetBtn from '../ResetBtn';
 
 const generateAlphabet = (capital = true) => {
   return [...Array(26)].map((_, i) =>
@@ -28,6 +29,7 @@ const Dashboard = () => {
   const [dataPreview2, setDataPreview2] = useState({cols:[], rows:[]});
   const [dataDownload, setDataDownload] = useState({cols:[], rows:[]});
   const [checkedClick, setCheckedClick] = useState(false);
+  const [resetClick, setResetClick] = useState(false);
   const [data, setData] = useState(()=>{
       const init = (num) => {
         let initData = [];
@@ -43,6 +45,29 @@ const Dashboard = () => {
       }
       return init(2);
   })
+
+  useEffect(() => {
+    setDataPreview1({cols:[], rows:[]});
+    setDataPreview2({cols:[], rows:[]});
+    setDataDownload({cols:[], rows:[]});
+    setCheckedClick(false);
+    setData(()=>{
+      const init = (num) => {
+        let initData = [];
+        for (let idx = 0; idx < num; idx++) {
+          initData.push({
+            id: uuidv4(),
+            fileName: '',
+            rows: [],
+            cols: [],
+          })
+        }
+        return initData;
+      }
+      return init(2);
+  });
+  }, [resetClick])
+
   useEffect(() => {
     if (data.find((ele)=>ele.status !== 'DONE')) return;
     const alphabet = generateAlphabet();
@@ -239,6 +264,7 @@ const Dashboard = () => {
         )
       : null}
       {data.filter(obj => obj.status !== 'DONE').length ? null : <AnalyzeBtn checkedClick={checkedClick} setCheckedClick={setCheckedClick} />}
+      {data.filter(obj => obj.status !== 'DONE').length ? null : <ResetBtn resetClick={resetClick} setResetClick={setResetClick} />}
     </Box>
   </Box>
   );
