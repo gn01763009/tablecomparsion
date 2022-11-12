@@ -1,5 +1,5 @@
 # Stage 0 - Build Frontend Assets
-FROM node:16.14.2-buster-slim as build
+FROM node:lts-alpine3.16 as build
 
 WORKDIR /app
 COPY package*.json ./
