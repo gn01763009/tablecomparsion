@@ -50,6 +50,7 @@ const ScreenshotBtn = ({previewRef, dataPreview2}) => {
 
   const onScreen = () => {
     window.location.href = imageUrl;
+    handleClose();
   }
 
   return (
